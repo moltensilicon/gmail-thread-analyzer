@@ -57,12 +57,16 @@ class PopupManager {
                 this.providerSelect.value = result.aiProvider;
             }
             
+            // Update model options based on provider before setting model value
+            this.updateModelOptions();
+
             if (result.apiKey) {
                 this.apiKeyInput.value = result.apiKey;
             }
             
             if (result.selectedModel) {
-                this.modelSelect.value = result.selectedModel;
+                //alert("Loaded Model: " + result.selectedModel + " Selected Model: " + this.modelSelect.value)
+                this.modelSelect.value = result.selectedModel;                
             }
         } catch (error) {
             console.error('Error loading settings:', error);
@@ -127,7 +131,7 @@ class PopupManager {
                 action: 'testApiConnection',
                 provider: provider,
                 apiKey: apiKey,
-                model: this.modelSelect.value
+                model: this.modelSelect.value                
             });
             
             if (response.success) {
