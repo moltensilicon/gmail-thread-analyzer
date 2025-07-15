@@ -100,6 +100,9 @@ class SidePanelManager {
             case 'showError':
                 this.showErrorState(message.error);
                 break;
+            case 'displayHelpText':
+                this.showHelpText(message.helpText);
+                break;
         }
     }
     
@@ -443,6 +446,34 @@ class SidePanelManager {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+
+    showHelpText(helpHtml) {
+        this.hideAllStates();
+        let helpDiv = document.getElementById('sidepanel-help-overlay');
+        if (!helpDiv) {
+            helpDiv = document.createElement('div');
+            helpDiv.id = 'sidepanel-help-overlay';
+            helpDiv.style.position = 'absolute';
+            helpDiv.style.top = '0';
+            helpDiv.style.left = '0';
+            helpDiv.style.width = '100%';
+            helpDiv.style.height = '100%';
+            helpDiv.style.background = 'rgba(255,255,255,0.98)';
+            helpDiv.style.zIndex = '9999';
+            helpDiv.style.overflowY = 'auto';
+            helpDiv.style.padding = '32px 24px';
+            helpDiv.style.fontSize = '16px';
+            helpDiv.style.color = '#222';
+            helpDiv.style.boxSizing = 'border-box';
+            helpDiv.style.display = 'flex';
+            helpDiv.style.flexDirection = 'column';
+            helpDiv.style.alignItems = 'center';
+            helpDiv.style.justifyContent = 'center';
+            document.body.appendChild(helpDiv);
+        }
+        helpDiv.innerHTML = helpHtml;
+        helpDiv.style.display = 'flex';
     }
 }
 

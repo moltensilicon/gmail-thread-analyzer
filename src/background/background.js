@@ -44,6 +44,10 @@ class BackgroundManager {
                     await this.openSidePanel(message, sender);
                     sendResponse({ success: true });
                     break;
+                case 'openSidePanelWithHelp':
+                    await this.openSidePanelWithHelp(message, sender);
+                    sendResponse({ success: true });
+                    break;
                     
                 default:
                     sendResponse({ success: false, error: 'Unknown action' });
@@ -169,6 +173,23 @@ Please provide only the JSON response without any additional text or formatting.
             }, 500);
         } catch (error) {
             console.error('Error opening side panel:', error);
+            throw error;
+        }
+    }
+    
+    async openSidePanelWithHelp(message, sender) {
+        try {
+            // Open side panel for the current tab
+            await chrome.sidePanel.open({ tabId: sender.tab.id });
+            // Send help text to side panel
+            setTimeout(() => {
+                chrome.runtime.sendMessage({
+                    action: 'displayHelpText',
+                    helpText: message.helpText
+                });
+            }, 500);
+        } catch (error) {
+            console.error('Error opening side panel with help:', error);
             throw error;
         }
     }

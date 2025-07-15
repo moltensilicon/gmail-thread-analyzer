@@ -10,6 +10,8 @@ class PopupManager {
         this.saveBtn = document.getElementById('save-btn');
         this.testBtn = document.getElementById('test-btn');
         this.statusMessage = document.getElementById('status-message');
+        this.sidepanelBtn = document.getElementById('sidepanel-btn');
+        this.sidepanelOpen = false;
         
         this.models = {
             openai: ['gpt-4', 'gpt-4-turbo', 'gpt-3.5-turbo'],
@@ -47,6 +49,12 @@ class PopupManager {
         this.apiKeyInput.addEventListener('input', () => {
             this.clearStatus();
         });
+        
+        if (this.sidepanelBtn) {
+            this.sidepanelBtn.addEventListener('click', () => {
+                this.toggleSidepanel();
+            });
+        }
     }
     
     async loadSettings() {
@@ -145,6 +153,35 @@ class PopupManager {
         } finally {
             this.testBtn.disabled = false;
             this.testBtn.textContent = 'Test Connection';
+        }
+    }
+    
+    async toggleSidepanel() {
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        if (!tab || !tab.url.includes('mail.google.com')) {
+            this.showStatus('Open Gmail to test the sidepanel.', 'error');
+            return;
+        }
+        if (!this.sidepanelOpen) {
+            // Open sidepanel and inject help text
+            await chrome.runtime.sendMessage({
+                action: 'openSidePanelWithHelp',
+                helpText: `\
+<strong>Gmail Thread Analyzer Sidepanel Help</strong><br><br>
+<b>Summary:</b> Brief overview of the thread.<br>
+<b>Outcomes & Decisions:</b> Key decisions and results.<br>
+<b>Action Items:</b> Tasks and assignments.<br>
+<b>Open Questions:</b> Unresolved issues or questions.<br>
+<b>Key Topics:</b> Main subjects discussed.<br><br>
+Use this panel to review AI-powered insights for your Gmail threads.`
+            });
+            this.sidepanelOpen = true;
+            this.sidepanelBtn.textContent = 'Close Sidepanel';
+        } else {
+            // Close sidepanel
+            await chrome.sidePanel.close({ tabId: tab.id });
+            this.sidepanelOpen = false;
+            this.sidepanelBtn.textContent = 'Test Sidepanel';
         }
     }
     
