@@ -56,15 +56,15 @@ class PopupManager {
             if (result.aiProvider) {
                 this.providerSelect.value = result.aiProvider;
             }
-            
-            // Update model options based on provider before setting model value
-            this.updateModelOptions();
+
 
             if (result.apiKey) {
                 this.apiKeyInput.value = result.apiKey;
             }
             
             if (result.selectedModel) {
+                // Update model options based on provider before setting model value
+                this.updateModelOptions();                
                 //alert("Loaded Model: " + result.selectedModel + " Selected Model: " + this.modelSelect.value)
                 this.modelSelect.value = result.selectedModel;                
             }
@@ -148,13 +148,16 @@ class PopupManager {
         }
     }
     
-    updateModelOptions() {
+    updateModelOptions(selectedModel) {
         const provider = this.providerSelect.value;
         const models = this.models[provider] || [];
-        
+
+        // Save current or passed selected model
+        const currentSelected = selectedModel !== undefined ? selectedModel : this.modelSelect.value;
+
         // Clear existing options except default
         this.modelSelect.innerHTML = '<option value="">Default Model</option>';
-        
+
         // Add provider-specific models
         models.forEach(model => {
             const option = document.createElement('option');
@@ -162,6 +165,13 @@ class PopupManager {
             option.textContent = model;
             this.modelSelect.appendChild(option);
         });
+
+        // Restore selection if possible
+        if (currentSelected && models.includes(currentSelected)) {
+            this.modelSelect.value = currentSelected;
+        } else {
+            this.modelSelect.value = '';
+        }
     }
     
     togglePasswordVisibility() {
