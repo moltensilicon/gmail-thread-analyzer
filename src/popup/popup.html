@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gmail Thread Analyzer Settings</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h2>Gmail Thread Analyzer</h2>
+            <p class="subtitle">Configure your AI provider</p>
+        </header>
+        
+        <main>
+            <div class="form-group">
+                <label for="provider-select">AI Provider:</label>
+                <select id="provider-select" class="form-control">
+                    <option value="">Select Provider</option>
+                    <option value="openai">OpenAI (GPT)</option>
+                    <option value="gemini">Google Gemini</option>
+                    <option value="claude">Anthropic Claude</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="api-key">API Key:</label>
+                <input type="password" id="api-key" class="form-control" placeholder="Enter your API key">
+                <button type="button" id="toggle-visibility" class="toggle-btn">👁️</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="model-select">Model (Optional):</label>
+                <select id="model-select" class="form-control">
+                    <option value="">Default Model</option>
+                </select>
+            </div>
+            
+            <div class="button-group">
+                <button id="save-btn" class="btn btn-primary">Save Settings</button>
+                <button id="test-btn" class="btn btn-secondary">Test Connection</button>
+            </div>
+            
+            <div id="status-message" class="status-message"></div>
+        </main>
+        
+        <footer>
+            <div class="help-text">
+                <p><strong>Getting API Keys:</strong></p>
+                <ul>
+                    <li><a href="https://platform.openai.com/api-keys" target="_blank">OpenAI API Keys</a></li>
+                    <li><a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a></li>
+                    <li><a href="https://console.anthropic.com/" target="_blank">Anthropic Console</a></li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>
+

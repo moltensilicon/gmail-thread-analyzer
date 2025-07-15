@@ -1,0 +1,16 @@
+{
+  "name": "gmail-thread-analyzer",
+  "version": "1.0.0",
+  "description": "Chrome extension that analyzes Gmail threads and extracts key information using AI",
+  "scripts": {
+    "build": "echo 'Build script placeholder'",
+    "dev": "echo 'Development script placeholder'"
+  },
+  "keywords": ["chrome-extension", "gmail", "ai", "thread-analysis"],
+  "author": "Manus AI",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chrome": "^0.0.246"
+  }
+}
+

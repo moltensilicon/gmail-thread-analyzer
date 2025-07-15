@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gmail Thread Analysis</title>
+    <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h2 class="title">Thread Analysis</h2>
+                <button id="refresh-btn" class="refresh-btn" title="Refresh Analysis">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                        <path d="M21 3v5h-5"/>
+                        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                        <path d="M3 21v-5h5"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="subtitle" id="thread-info">
+                Click "Analyze Thread" in Gmail to see results here
+            </div>
+        </header>
+        
+        <main class="main-content">
+            <div id="loading-state" class="loading-state" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Analyzing thread...</p>
+            </div>
+            
+            <div id="empty-state" class="empty-state">
+                <div class="empty-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-4"/>
+                        <path d="M9 11V7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"/>
+                        <circle cx="12" cy="16" r="1"/>
+                    </svg>
+                </div>
+                <h3>No Analysis Yet</h3>
+                <p>Navigate to a Gmail thread and click the "Analyze Thread" button to see AI-powered insights here.</p>
+                <div class="setup-reminder">
+                    <p><strong>Setup Required:</strong></p>
+                    <ol>
+                        <li>Click the extension icon in your toolbar</li>
+                        <li>Select your preferred AI provider</li>
+                        <li>Enter your API key</li>
+                        <li>Save settings and test connection</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div id="analysis-content" class="analysis-content" style="display: none;">
+                <!-- Summary Section -->
+                <section class="analysis-section">
+                    <div class="section-header" data-section="summary">
+                        <h3>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                                <polyline points="10,9 9,9 8,9"/>
+                            </svg>
+                            Summary
+                        </h3>
+                        <button class="toggle-btn" data-target="summary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="section-content" id="summary-content">
+                        <p id="summary-text">Loading summary...</p>
+                    </div>
+                </section>
+                
+                <!-- Outcomes & Decisions Section -->
+                <section class="analysis-section">
+                    <div class="section-header" data-section="outcomes">
+                        <h3>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22,4 12,14.01 9,11.01"/>
+                            </svg>
+                            Outcomes & Decisions
+                            <span class="count-badge" id="outcomes-count">0</span>
+                        </h3>
+                        <button class="toggle-btn" data-target="outcomes">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="section-content" id="outcomes-content">
+                        <div class="items-container" id="outcomes-list">
+                            <!-- Outcomes will be populated here -->
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Action Items Section -->
+                <section class="analysis-section">
+                    <div class="section-header" data-section="actions">
+                        <h3>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 11l3 3L22 4"/>
+                                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                            </svg>
+                            Action Items
+                            <span class="count-badge" id="actions-count">0</span>
+                        </h3>
+                        <button class="toggle-btn" data-target="actions">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="section-content" id="actions-content">
+                        <div class="items-container" id="actions-list">
+                            <!-- Action items will be populated here -->
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Open Questions Section -->
+                <section class="analysis-section">
+                    <div class="section-header" data-section="questions">
+                        <h3>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                            Open Questions
+                            <span class="count-badge" id="questions-count">0</span>
+                        </h3>
+                        <button class="toggle-btn" data-target="questions">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="section-content" id="questions-content">
+                        <div class="items-container" id="questions-list">
+                            <!-- Questions will be populated here -->
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Key Topics Section -->
+                <section class="analysis-section">
+                    <div class="section-header" data-section="topics">
+                        <h3>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+                                <line x1="7" y1="7" x2="7.01" y2="7"/>
+                            </svg>
+                            Key Topics
+                            <span class="count-badge" id="topics-count">0</span>
+                        </h3>
+                        <button class="toggle-btn" data-target="topics">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="section-content" id="topics-content">
+                        <div class="items-container" id="topics-list">
+                            <!-- Topics will be populated here -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <div id="error-state" class="error-state" style="display: none;">
+                <div class="error-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="15" y1="9" x2="9" y2="15"/>
+                        <line x1="9" y1="9" x2="15" y2="15"/>
+                    </svg>
+                </div>
+                <h3>Analysis Failed</h3>
+                <p id="error-message">Something went wrong during analysis.</p>
+                <button id="retry-btn" class="retry-btn">Try Again</button>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <div class="footer-info">
+                <span id="analysis-timestamp"></span>
+            </div>
+            <div class="footer-actions">
+                <button id="export-btn" class="export-btn" title="Export Analysis">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                        <polyline points="7,10 12,15 17,10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Export
+                </button>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="sidepanel.js"></script>
+</body>
+</html>
+
